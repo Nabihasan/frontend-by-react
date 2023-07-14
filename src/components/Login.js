@@ -5,9 +5,10 @@ import Button from "react-bootstrap/Button";
 import Sign_img from "./Sign_img";
 //import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import authService from "../services/authService";
 
 const LoginEmp = ({ setRole }) => {
-  const [companyEmail, setcompanyEmail] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -21,51 +22,58 @@ const LoginEmp = ({ setRole }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    authService.login(companyEmail,password)
+    .then((res)=>{
+
+      // console.log(res.role);
+      setRole(res.role[0]);
+    })
+
 
     // Send login request to the authentication API
-    fetch("http://localhost:8080/api/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ companyEmail, password }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        // Handle the API response
-        console.log("hiii", result);
-        if (result.role.includes("ROLE_ADMIN")) {
-          localStorage.setItem("user", JSON.stringify(result));
-          localStorage.setItem("token", JSON.stringify(result.accessToken));
-          console.log(localStorage.setItem);
+    // fetch("http://localhost:8080/api/auth/signin", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ companyEmail, password }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     // Handle the API response
+    //     console.log("hiii", result);
+    //     if (result.role.includes("ROLE_ADMIN")) {
+    //       localStorage.setItem("user", JSON.stringify(result));
+    //       localStorage.setItem("token", JSON.stringify(result.accessToken));
+    //       console.log(localStorage.setItem);
 
-          console.log(result.role);
+    //       console.log(result.role);
 
-          //navigate("/ticket")
+    //       //navigate("/ticket")
 
-          if (result.role.includes("ROLE_USER")) {
-            handleLoginEmployee();
-            // navigate("/hello")
-          }
-        } else {
-          alert("please enter connect details");
-        }
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the API request
+    //       if (result.role.includes("ROLE_USER")) {
+    //         handleLoginEmployee();
+    //         // navigate("/hello")
+    //       }
+    //     } else {
+    //       alert("please enter correct details");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // Handle any errors that occur during the API request
 
-        console.error("Error:", error);
-      });
+    //     console.error("Error:", error);
+    //   });
   };
 
   const handleUsernameChange = (e) => {
-    setcompanyEmail(e.target.value);
-    console.log(companyEmail);
+    setCompanyEmail(e.target.value);
+    // console.log(companyEmail);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    console.log(password);
+    // console.log(password);
   };
 
   return (

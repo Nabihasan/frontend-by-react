@@ -16,14 +16,12 @@ const App = () => {
         {/* <Route path="/*" element={<LoginRoutes />} /> */}
           <Route path="/" element={<Login setRole={setUserRole} />}/>
           
-          {userRole === "admin" && (
+          {userRole === "ROLE_ADMIN" && (
             <Route path="/*" element={<AdminRoutes />} />
           )}
-          {userRole === "employee" && (
+          {userRole === "ROLE_USER" && (
             <Route path="/*" element={<EmployeeRoutes/>} />
           )}
-
-         
       
           <Route exact path="*" element={<Login setRole={setUserRole}/>}/>
         </Routes>
